@@ -1,0 +1,104 @@
+{
+  "name": "Workflow 3 - Phishing-click",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "phishing-click",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6d9540ce-9103-491f-be63-93a5ed74ae63",
+      "name": "Webhook",
+      "webhookId": "a9d3c85e-facf-4cab-aa42-ee7224ec5b91"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO events (\n  email,\n  name,\n  event_type,\n  event_time,\n  ip,\n  user_agent,\n  country\n)\nVALUES (\n  '{{ $json.query.email }}',\n  '{{ $json.query.name }}',\n  'click',\n  NOW() AT TIME ZONE 'America/Argentina/Buenos_Aires',\n  '{{ $json.headers['x-forwarded-for'] }}',\n  '{{ $json.headers['user-agent'] }}',\n  '{{ $json.headers['cf-ipcountry'] }}'\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "1f6a2240-adc3-4d2c-af3e-427049aa1ffb",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "w3eEUo4zkjYrRhjh",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Simulación de phishing - Hooklight</title>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      background: #f7f7f7;\n      margin: 0;\n      padding: 0;\n      color: #222;\n    }\n    .container {\n      max-width: 760px;\n      margin: 40px auto;\n      background: #ffffff;\n      border-radius: 12px;\n      box-shadow: 0 4px 18px rgba(0,0,0,0.08);\n      padding: 32px;\n    }\n    .alert {\n      background: #fff3cd;\n      border: 1px solid #ffe69c;\n      color: #7a5c00;\n      padding: 14px 16px;\n      border-radius: 8px;\n      margin-bottom: 24px;\n      font-weight: bold;\n    }\n    h1 {\n      color: #b22222;\n      margin-top: 0;\n    }\n    h2 {\n      margin-top: 28px;\n      color: #333;\n    }\n    ul {\n      line-height: 1.7;\n    }\n    .box {\n      background: #f1f5f9;\n      border-left: 4px solid #b22222;\n      padding: 16px;\n      border-radius: 6px;\n      margin-top: 20px;\n    }\n    .footer {\n      margin-top: 30px;\n      font-size: 14px;\n      color: #666;\n      text-align: center;\n    }\n    .btn {\n      display: inline-block;\n      margin-top: 18px;\n      padding: 12px 20px;\n      background: #b22222;\n      color: white;\n      text-decoration: none;\n      border-radius: 8px;\n      font-weight: bold;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"alert\">\n      ⚠ Has interactuado con un correo simulado de phishing.\n    </div>\n\n    <h1>Simulación académica de phishing</h1>\n\n    <p>\n      Esta acción forma parte de una práctica educativa orientada a fortalecer la\n      concientización en ciberseguridad.\n    </p>\n\n    <div class=\"box\">\n      El objetivo no es sancionar, sino ayudar a identificar señales de riesgo\n      y mejorar la detección de correos fraudulentos.\n    </div>\n\n    <h2>¿Qué señales podrías haber detectado?</h2>\n    <ul>\n      <li>Urgencia o presión para actuar rápidamente.</li>\n      <li>Solicitud inesperada de validación o verificación.</li>\n      <li>Mensaje con tono institucional pero no confirmado por canales oficiales.</li>\n      <li>Enlace que invita a ingresar o validar datos.</li>\n      <li>Contexto alarmante para generar preocupación.</li>\n    </ul>\n\n    <h2>Buenas prácticas recomendadas</h2>\n    <ul>\n      <li>Verificar siempre el remitente real.</li>\n      <li>Pasar el cursor sobre los enlaces antes de hacer clic.</li>\n      <li>Confirmar solicitudes sensibles por un canal oficial.</li>\n      <li>No ingresar credenciales desde enlaces recibidos por correo.</li>\n      <li>Reportar mensajes sospechosos al área de sistemas o seguridad.</li>\n    </ul>\n\n    <a class=\"btn\" href=\"https://hooklight.dev.ar\">\n      Entendido\n    </a>\n\n    <div class=\"footer\">\n      Hooklight · Simulación académica de phishing\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        416,
+        0
+      ],
+      "id": "ca455966-425e-4dcb-b262-05bc61fcaeeb",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "247483bf-5901-4dae-8b9e-0ba320c863ca",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f7416a2a1fef2887ed738fbb39b35fa783ba462c53b27d547f0cee3c894206b8"
+  },
+  "id": "m6pYV4LEXeWFRhhx",
+  "tags": [
+    {
+      "name": "HOOKLIGHT",
+      "id": "4NCJShOYTkCm0Uyp",
+      "updatedAt": "2026-03-06T19:39:23.380Z",
+      "createdAt": "2026-03-06T19:39:23.380Z"
+    }
+  ]
+}

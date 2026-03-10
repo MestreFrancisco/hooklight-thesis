@@ -1,0 +1,189 @@
+{
+  "name": "Workflow 1 — Envío de campaña",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        96
+      ],
+      "id": "37cfd9bb-8a2d-452a-8a11-9ce5a86de36d"
+    },
+    {
+      "parameters": {
+        "filePath": "/home/node/.n8n-files/participants.csv"
+      },
+      "name": "Read CSV",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        -96
+      ],
+      "id": "3376b4d5-6732-4624-bded-89fa8b5888ad"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Spreadsheet File",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -80
+      ],
+      "id": "7dafb846-7c55-4dbd-a598-6d12e3a9c048"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.consent }}",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "name": "IF Consent",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        96
+      ],
+      "id": "809165e8-776b-4cad-af8f-82f0f0d8844e"
+    },
+    {
+      "parameters": {
+        "fromEmail": "Hooklight <postmaster@sandboxc0d479b123664a07b23f3d6a0eb9fac7.mailgun.org>",
+        "toEmail": "={{ $json.email }}",
+        "subject": "Actualización de seguridad del Campus Virtual",
+        "html": "=<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Actualización de seguridad del Campus Virtual</title>\n</head>\n<body style=\"font-family: Arial, sans-serif; background:#f5f5f5; padding:30px; color:#222;\">\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:700px; margin:auto; background:#ffffff; border-radius:10px; padding:30px;\">\n    <tr>\n      <td>\n        <p style=\"margin-top:0;\">\n          <img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6K7dbod3sR5XjBX26x57wI9wi8IIkZ4eviw&s\" width=\"120\" alt=\"Logo institucional\">\n          <img src=\"https://journalist-ntsc-dover-reservoir.trycloudflare.com/webhook/open?email={{$json.email}}&name={{ $json.name }}\" width=\"1\" height=\"1\" style=\"display:none;\" alt=\"\">\n        </p>\n\n        <h2 style=\"color:#b22222; margin-bottom:20px;\">Actualización de seguridad del Campus Virtual</h2>\n\n        <p>Estimado/a <strong>{{$json.name}}</strong>,</p>\n\n        <p>\n          Detectamos un intento de acceso inusual asociado a tu cuenta institucional\n          del Campus Virtual. Como medida preventiva, se requiere una verificación de identidad.\n        </p>\n\n        <p>\n          Para evitar restricciones temporales sobre tu acceso, te solicitamos completar\n          la validación desde el siguiente enlace:\n        </p>\n\n        <p style=\"margin:30px 0;\">\n          <a href=\"https://journalist-ntsc-dover-reservoir.trycloudflare.com/webhook/phishing-click?email={{$json.email}}&name={{$json.name}}\"\n             style=\"background:#b22222; color:#ffffff; text-decoration:none; padding:14px 22px; border-radius:8px; font-weight:bold; display:inline-block;\">\n            Validar cuenta\n          </a>\n        </p>\n\n        <p>\n          Si ya realizaste esta verificación recientemente, podés ignorar este mensaje.\n        </p>\n\n        <p>\n          Atentamente,<br>\n          <strong>Dirección de Sistemas</strong><br>\n          Universidad Tecnológica Nacional\n        </p>\n\n        <hr style=\"border:none; border-top:1px solid #ddd; margin:30px 0;\">\n\n        <p style=\"font-size:12px; color:#666; margin-bottom:0;\">\n          Este correo fue generado automáticamente por el sistema institucional.\n        </p>\n      </td>\n    </tr>\n  </table>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.mailgun",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        80
+      ],
+      "id": "4ad828c6-1394-49dc-aa3e-5b07b0f8ffca",
+      "name": "Mailgun",
+      "credentials": {
+        "mailgunApi": {
+          "id": "f1n7nBbljkK1E4pA",
+          "name": "Mailgun account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "19wAEFFFoNADMuCgV8_am2Dr7Gcchw7A0lb9xzJEiWEo",
+          "mode": "list",
+          "cachedResultName": "participants",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19wAEFFFoNADMuCgV8_am2Dr7Gcchw7A0lb9xzJEiWEo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19wAEFFFoNADMuCgV8_am2Dr7Gcchw7A0lb9xzJEiWEo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -624,
+        96
+      ],
+      "id": "d43cf69a-f194-429b-91e6-337f71322c32",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Vps9DaSp3rT3CIMA",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read CSV": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet File": {
+      "main": [
+        []
+      ]
+    },
+    "IF Consent": {
+      "main": [
+        [
+          {
+            "node": "Mailgun",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "IF Consent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f7b8b915-657c-40ba-8215-6b60714de225",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f7416a2a1fef2887ed738fbb39b35fa783ba462c53b27d547f0cee3c894206b8"
+  },
+  "id": "zQbd2Kb8lhjxwcGr",
+  "tags": [
+    {
+      "name": "HOOKLIGHT",
+      "id": "4NCJShOYTkCm0Uyp",
+      "updatedAt": "2026-03-06T19:39:23.380Z",
+      "createdAt": "2026-03-06T19:39:23.380Z"
+    }
+  ]
+}

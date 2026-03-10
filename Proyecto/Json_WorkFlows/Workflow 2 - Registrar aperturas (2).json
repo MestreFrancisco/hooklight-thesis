@@ -1,0 +1,103 @@
+{
+  "name": "Workflow 2 - Registrar aperturas",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "open",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1ff2d76e-64a6-413d-a81a-a3b426f30584",
+      "name": "Webhook",
+      "webhookId": "88513e95-d379-451c-8aeb-7127b52f08ab"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO events (\n  email,\n  name,\n  event_type,\n  event_time,\n  ip,\n  user_agent,\n  country\n)\nVALUES (\n  '{{ $json.query.email }}',\n  '{{ $json.query.name }}',\n  'open',\n  NOW() AT TIME ZONE 'America/Argentina/Buenos_Aires',\n  '{{ $json.headers['x-forwarded-for'] }}',\n  '{{ $json.headers['user-agent'] }}',\n  '{{ $json.headers['cf-ipcountry'] }}'\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5514e6e0-cc83-412c-b04b-1da290f31c1a",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "w3eEUo4zkjYrRhjh",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        416,
+        0
+      ],
+      "id": "ab838f11-98b7-4329-ae46-a5590f595af4",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c0d2e5b8-414e-4c4d-af67-394d29a20745",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f7416a2a1fef2887ed738fbb39b35fa783ba462c53b27d547f0cee3c894206b8"
+  },
+  "id": "DGu97iOyzYqgffCY",
+  "tags": [
+    {
+      "name": "HOOKLIGHT",
+      "id": "4NCJShOYTkCm0Uyp",
+      "updatedAt": "2026-03-06T19:39:23.380Z",
+      "createdAt": "2026-03-06T19:39:23.380Z"
+    }
+  ]
+}
