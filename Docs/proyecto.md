@@ -67,7 +67,7 @@ La plataforma permite recrear de forma controlada ataques de ingeniería social 
 
 El sistema automatiza todo el ciclo de una campaña de phishing simulada mediante el uso de herramientas de **orquestación** y **monitoreo**. Primero se carga una lista de participantes, luego se envían correos electrónicos simulados que incluyen mecanismos de seguimiento como píxeles de apertura y enlaces de seguimiento. Cuando un usuario interactúa con el correo, el sistema registra eventos como la apertura del mensaje o el clic en el enlace.
 
-#### 📘 [ver explicación detallada de los flujos ](/Docs/arquitectura.md)
+#### 📘 [ver explicación detallada de los flujos ](/Docs/flujo.md)
 ---
 ### ♒ Flujo De Automatización
 
@@ -111,6 +111,11 @@ WebhookClick --> Training
 
 Cloudflare --> WebhookOpen
 Cloudflare --> WebhookClick
+
+style Sheets fill: #9cff8f , color:black
+style DB fill: #1a36d1 , color:white
+style Mailgun fill: #d34646 , color:white
+
 ```
 
 ---
