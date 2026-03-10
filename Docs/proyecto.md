@@ -122,7 +122,7 @@ De esta forma, Hooklight permite evaluar de forma práctica la vulnerabilidad hu
 ---
 ---
 #### Temas Relacionados.
-+ ###  [Ver Diagrama de Flujo](/Docs/Investigacion.md)
++ ###  [Ver Diagrama de Flujo](/Docs/flujo.md)
 + ###  [Ver Diagrama de Arquitectura](/Docs/arquitectura.md)
 + ###  [Investigacion sobre pishing](/Docs/Investigacion.md)
 + ###  [Regresar](/README.md)

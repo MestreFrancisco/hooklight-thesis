@@ -17,7 +17,7 @@ Presentamos el tema 2 un Sistema diseñado para simular campañas de phishing de
 
 + ###  [📕 Investigacion sobre pishing](/Docs/Investigacion.md)
 
-+ ###  [📘 Ver Diagrama de Flujo](/Docs/Investigacion.md)
++ ###  [📘 Ver Diagrama de Flujo](/Docs/flujo.md)
 
 + ###  [📘 Ver Diagrama de Arquitectura](/Docs/arquitectura.md)
 
